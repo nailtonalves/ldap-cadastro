@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  ldap-web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/var/www/html
+    restart: always

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro e Alteração de Senha LDAP</title>
+</head>
+<body>
+    <h2>Auto-Cadastro LDAP</h2>
+    <form id="registerForm">
+        UID: <input type="text" name="uid" required><br>
+        Nome: <input type="text" name="givenName" required><br>
+        Sobrenome: <input type="text" name="sn" required><br>
+        Email: <input type="email" name="mail" required><br>
+        CPF: <input type="text" name="cpf" required><br>
+        Data de Nascimento (YYYYMMDD): <input type="text" name="dob" required><br>
+        Senha: <input type="password" name="password" required><br>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Alterar Senha</h2>
+    <form id="changePasswordForm">
+        E-maili: <input type="mail" name="mail" required><br>
+        Senha Atual: <input type="password" name="currentPassword" required><br>
+        Nova Senha: <input type="password" name="newPassword" required><br>
+        <button type="submit">Alterar Senha</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("registerForm").onsubmit = async function(e) {
+            console.log("Submitting registration form");
+            e.preventDefault();
+            const formData = new FormData(this);
+            const res = await fetch("register.php", {
+                method: "POST",
+                body: formData
+            });
+            console.log("Submitting registration form 2");
+            console.log( res);
+            const json = await res.json();
+            console.log(json);
+            document.getElementById("result").innerText = json.success ? "Cadastro realizado com sucesso!" : "Erro: " + json.error;
+        };
+
+        document.getElementById("changePasswordForm").onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const res = await fetch("change_password.php", {
+                method: "POST",
+                body: formData
+            });
+            const json = await res.json();
+            document.getElementById("result").innerText = json.success ? "Senha alterada com sucesso!" : "Erro: " + json.error;
+        };
+    </script>
+</body>
+</html>
